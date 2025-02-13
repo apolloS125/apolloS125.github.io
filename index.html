@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Special</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes floatHeart {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+        }
+        .floating-heart {
+            position: absolute;
+            animation: floatHeart 2s linear infinite;
+        }
+        .hidden-surprise {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffebf0;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+            border: 4px dashed #ff66a3;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen bg-gradient-to-r from-pink-200 via-pink-300 to-pink-400 relative overflow-hidden flex-col">
+    
+    <!-- Valentine Card -->
+    <div id="valentine-card" class="bg-white p-8 rounded-lg shadow-2xl text-center relative z-10 border-4 border-pink-500">
+        <p class="text-3xl font-bold text-pink-600">Click me 💕</p>
+        <div class="text-red-500 text-8xl cursor-pointer mt-4 animate-bounce" onclick="showMessage()">💖</div>
+        <p id="message" class="hidden text-3xl font-bold text-pink-700 mt-4">Happy Valentine's Day!💞</p>
+        <p id ="message2" class="hidden text-3xl font-bold text-pink-700 mt-4">I love you!💗</p>
+        <p id="message3" class="hidden text-3xl font-bold text-pink-700 mt-4">Try my game</p>
+    </div>
+    
+    <!-- Game: Match the Hearts -->
+    <div id="game-container" class="bg-white p-8 mt-8 rounded-lg shadow-2xl text-center relative z-10 border-4 border-pink-500">
+        <p class="text-3xl font-bold text-pink-600">Match the Hearts Game 💗</p>
+        <button class="mt-4 px-6 py-3 bg-red-400 text-white font-bold text-lg rounded-full shadow-lg transition transform hover:scale-105" onclick="startGame()">Start</button>
+        <div id="game-board" class="grid grid-cols-4 gap-4 mt-6 hidden"></div>
+    </div>
+    
+    <!-- Surprise Message -->
+    <div id="surprise" class="hidden-surprise">
+        <h2 class="text-5xl font-bold text-red-500">🎉 You Did It! 🎉</h2>
+        <p class="text-xl text-pink-600 mt-4">You won the game! Here's a special message for you:</p>
+        <p class="text-3xl font-bold text-pink-800 mt-4 italic">"You're the sweetest thing ever! 💝"</p>
+        <button class="mt-6 px-6 py-3 bg-red-400 text-white font-bold rounded-full shadow-lg transition transform hover:scale-105" onclick="hideSurprise()">Close</button>
+    </div>
+    
+    <script>
+        function showMessage() {
+            document.getElementById('message').classList.remove('hidden');
+            document.getElementById('message2').classList.remove('hidden');
+            document.getElementById('message3').classList.remove('hidden');
+            createHearts();
+        }
+        
+        function createHearts() {
+            for (let i = 0; i < 10; i++) {
+                let heart = document.createElement('div');
+                heart.innerHTML = '💖';
+                heart.classList.add('floating-heart', 'text-red-500', 'text-4xl');
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                heart.style.top = window.innerHeight + 'px';
+                heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 2000);
+            }
+        }
+
+        function startGame() {
+            let board = document.getElementById('game-board');
+            board.innerHTML = '';
+            board.classList.remove('hidden');
+            let emojis = ['❤️', '💖', '💘', '💕', '💞', '💗', '💓', '❣️'];
+            let pairs = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
+            
+            pairs.forEach((emoji, index) => {
+                let card = document.createElement('div');
+                card.classList.add('p-6', 'bg-pink-300', 'rounded-lg', 'text-4xl', 'cursor-pointer', 'shadow-lg', 'border-4', 'border-pink-500');
+                card.dataset.value = emoji;
+                card.onclick = function() { flipCard(this); };
+                board.appendChild(card);
+            });
+        }
+
+        let flippedCards = [];
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !card.textContent) {
+                card.textContent = card.dataset.value;
+                flippedCards.push(card);
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 500);
+                }
+            }
+        }
+        
+        function checkMatch() {
+            if (flippedCards[0].dataset.value === flippedCards[1].dataset.value) {
+                flippedCards.forEach(card => card.style.backgroundColor = 'lightgreen');
+                flippedCards = [];
+                checkWin();
+            } else {
+                setTimeout(() => {
+                    flippedCards.forEach(card => card.textContent = '');
+                    flippedCards = [];
+                }, 500);
+            }
+        }
+        
+        function checkWin() {
+            let cards = document.querySelectorAll('#game-board div');
+            let matched = Array.from(cards).every(card => card.style.backgroundColor === 'lightgreen');
+            if (matched) {
+                document.getElementById('game-container').style.display = 'none';
+                document.getElementById('valentine-card').style.display = 'none';
+                document.getElementById('surprise').style.display = 'block';
+            }
+        }
+
+        function hideSurprise() {
+            document.getElementById('surprise').style.display = 'none';
+            document.getElementById('game-container').style.display = 'block';
+            document.getElementById('valentine-card').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
