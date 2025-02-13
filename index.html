@@ -28,25 +28,31 @@
             width: 80%;
             max-width: 400px;
             border: 4px dashed #ff66a3;
+            z-index: 50;
+        }
+        body {
+            min-height: 100vh;
+            overflow-y: auto;
         }
     </style>
 </head>
-<body class="flex items-center justify-center h-screen bg-gradient-to-r from-pink-200 via-pink-300 to-pink-400 relative overflow-hidden flex-col">
-    
-    <!-- Valentine Card -->
-    <div id="valentine-card" class="bg-white p-8 rounded-lg shadow-2xl text-center relative z-10 border-4 border-pink-500">
-        <p class="text-3xl font-bold text-pink-600">Click me 💕</p>
-        <div class="text-red-500 text-8xl cursor-pointer mt-4 animate-bounce" onclick="showMessage()">💖</div>
-        <p id="message" class="hidden text-3xl font-bold text-pink-700 mt-4">Happy Valentine's Day!💞</p>
-        <p id ="message2" class="hidden text-3xl font-bold text-pink-700 mt-4">May your heart be full of happiness today and always! 💫</p>
-        <p id="message3" class="hidden text-3xl font-bold text-pink-700 mt-4">Try my game</p>
-    </div>
-    
-    <!-- Game: Match the Hearts -->
-    <div id="game-container" class="bg-white p-8 mt-8 rounded-lg shadow-2xl text-center relative z-10 border-4 border-pink-500">
-        <p class="text-3xl font-bold text-pink-600">Match the Hearts Game 💗</p>
-        <button class="mt-4 px-6 py-3 bg-red-400 text-white font-bold text-lg rounded-full shadow-lg transition transform hover:scale-105" onclick="startGame()">Start</button>
-        <div id="game-board" class="grid grid-cols-4 gap-4 mt-6 hidden"></div>
+<body class="bg-gradient-to-r from-pink-200 via-pink-300 to-pink-400 py-10">
+    <div class="container mx-auto px-4 flex flex-col items-center gap-8">
+        <!-- Valentine Card -->
+        <div id="valentine-card" class="bg-white p-8 rounded-lg shadow-2xl text-center relative z-10 border-4 border-pink-500 w-full max-w-md">
+            <p class="text-3xl font-bold text-pink-600">Click me 💕</p>
+            <div class="text-red-500 text-8xl cursor-pointer mt-4 animate-bounce" onclick="showMessage()">💖</div>
+            <p id="message" class="hidden text-3xl font-bold text-pink-700 mt-4">Happy Valentine's Day!💞</p>
+            <p id="message2" class="hidden text-3xl font-bold text-pink-700 mt-4">I hope u will have a good day</p>
+            <p id="message3" class="hidden text-3xl font-bold text-pink-700 mt-4">Try my game</p>
+        </div>
+        
+        <!-- Game: Match the Hearts -->
+        <div id="game-container" class="bg-white p-8 rounded-lg shadow-2xl text-center relative z-10 border-4 border-pink-500 w-full max-w-md">
+            <p class="text-3xl font-bold text-pink-600">Match the Hearts Game 💗</p>
+            <button class="mt-4 px-6 py-3 bg-red-400 text-white font-bold text-lg rounded-full shadow-lg transition transform hover:scale-105" onclick="startGame()">Start</button>
+            <div id="game-board" class="grid grid-cols-4 gap-4 mt-6 hidden"></div>
+        </div>
     </div>
     
     <!-- Surprise Message -->
